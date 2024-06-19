@@ -1,4 +1,4 @@
-import { Context, Session, Logger } from 'koishi'
+import { Context, Session, Logger, Channel } from 'koishi'
 import { Config } from './config'
 import { IDict, Metadata } from './types'
 import { get_encoding } from '@dqbd/tiktoken'
@@ -39,12 +39,32 @@ export class Eye {
     }
     public readInput(cxt: Context, s: Session) : string | null | undefined {
         if (cxt.bots[s.uid]) return null
-        const state = s.subtype !== 'group' ? 4 : // 私聊
-        s.parsed.appel ? 1 : // @bot或者引用/回复bot
-        this._mentionedName(s.content) ? 2 : // 直呼其名
-        Math.random() < this._randomReplyFrequency ? 3 : 0 // 随机回复 // 不回复
+        if (this._islog) {
+            this._logger.info(`readInput, Session:${JSON.stringify(s, null, 2)}`)
+            this._logger.info(`readInput, channel type:${s.event.channel.type}, uid:${s.uid}, userId:${s.userId}, selfId:${s.selfId}`)
+        }
+        var state = 0;
+        if (s.event.channel.type === 1) {
+            state = 4 // 私聊
+        } else {
+            if (this._mentionedName(s.content)) {
+                state = 2 // @bot或者引用/回复bot
+            } else if (s.event.message.quote && s.event.message.quote.user.id === s.selfId) {
+                state = 1 // 引用/回复bot
+            } else if (Math.random() < this._randomReplyFrequency) {
+                state = 3 // 随机回复
+            }
+        }
+        // state = s.subtype !== 'group' ? 4 : // 私聊
+        // // s.parsed.appel ? 1 : // @bot或者引用/回复bot
+        // false ? 1 : // @bot或者引用/回复bot
+        // this._mentionedName(s.content) ? 2 : // 直呼其名
+        // Math.random() < this._randomReplyFrequency ? 3 : 0 // 随机回复 // 不回复
         if (state === 0) return null
-        const input = s.content.replace(/<[^>]*>/g, '') // 去除XML元素
+        var input = s.content.replace(/<[^>]*>/g, '') // 去除XML元素
+        for (const name of this._names) {
+            input = input.replace('@'+ name, '')
+        }
         if (!input || input === '') return null
         const statename = state == 1 ? 'appelled' : 
         state == 2 ? 'name called' : state == 3 ? 'random reply' : 'private message'

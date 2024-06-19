@@ -1,15 +1,15 @@
 {
-  "name": "@tomlbz/koishi-plugin-openai",
+  "name": "@invokerw/koishi-plugin-openai",
   "description": "Calls OpenAI language models for Koishi.js",
   "private": false,
-  "version": "2.0.8",
+  "version": "2.0.9",
   "author": "TomLBZ <libozhao142857@hotmail.com>",
   "maintainers": [
     "TomLBZ <libozhao142857@hotmail.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/TomLBZ/koishi-plugin-openai.git"
+    "url": "https://github.com/invokerw/koishi-plugin-openai.git"
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -26,14 +26,15 @@
     "openai"
   ],
   "peerDependencies": {
-    "koishi": "^4.9.0"
+    "koishi": "^4.17.9"
   },
   "dependencies": {
     "@dqbd/tiktoken": "^0.4.0",
-    "@types/fs-extra": "^11.0.1",
-    "@types/jsdom": "^21.1.1",
+    "@koishijs/plugin-http": "^0.5.3",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jsdom": "^21.1.7",
     "fs-extra": "^10.1.0",
-    "jsdom": "^21.1.1",
+    "jsdom": "^21.1.2",
     "uuid-by-string": "^4.0.0"
   },
   "publishConfig": {
@@ -48,5 +49,8 @@
       "zh",
       "en"
     ]
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0-dev.20240618"
   }
 }

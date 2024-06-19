@@ -201,7 +201,7 @@ export function apply(ctx: Context, config: Config) {
       logger.info(`Slowest: ${maxlabel} with ${percent}% of the time`);
     }
     if (config.isLog) logger.info(`Reply: ${rtext}`);
-    return config.isReplyWithAt && session.subtype === "group"
+    return config.isReplyWithAt && session.event.channel.type === 0
       ? h("at", { id: session.userId }) + rtext
       : rtext; // 按情况@发送者
   });

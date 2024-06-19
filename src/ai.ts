@@ -36,6 +36,9 @@ export class AI {
     this._openaiKey = config.apiKey;
     this._apiAdress = config.apiAdress;
     this._allmodels = await this._listModels(context);
+    this._logger.info(
+      "OpenAI Models: " + JSON.stringify(this._allmodels, null, 2)
+    );
     return this._updateModels(
       config.chatModel,
       config.keywordModel,
