@@ -118,8 +118,9 @@
 
 ### run
 ```
+# in koishi-app dir
 # build
-npx tsc
+npm run build openai
 
 # pub 
 npm run pub openai

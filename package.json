@@ -2,7 +2,7 @@
   "name": "@invokerw/koishi-plugin-openai",
   "description": "Calls OpenAI language models for Koishi.js",
   "private": false,
-  "version": "2.0.10",
+  "version": "2.0.11",
   "author": "Wei <weifei666@gmail.com>",
   "maintainers": [
     "TomLBZ <libozhao142857@hotmail.com>",
@@ -12,7 +12,6 @@
     "type": "git",
     "url": "https://github.com/invokerw/koishi-plugin-openai.git"
   },
-  "type": "module",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
