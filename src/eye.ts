@@ -42,12 +42,15 @@ export class Eye {
         if (this._islog) {
             this._logger.info(`readInput, Session:${JSON.stringify(s, null, 2)}`)
             this._logger.info(`readInput, channel type:${s.event.channel.type}, uid:${s.uid}, userId:${s.userId}, selfId:${s.selfId}`)
+            this._logger.info(`readInput, s.stripped:${JSON.stringify(s.stripped)}`)
         }
         var state = 0;
         if (s.event.channel.type === 1) {
             state = 4 // 私聊
         } else {
-            if (this._mentionedName(s.content)) {
+            if (s.stripped.appel) {
+                state = 1 // @bot或者引用/回复bot
+            } else if (this._mentionedName(s.content)) {
                 state = 2 // @bot或者引用/回复bot
             } else if (s.event.message.quote && s.event.message.quote.user.id === s.selfId) {
                 state = 1 // 引用/回复bot
@@ -63,7 +66,7 @@ export class Eye {
         if (state === 0) return null
         var input = s.content.replace(/<[^>]*>/g, '') // 去除XML元素
         for (const name of this._names) {
-            input = input.replace('@'+ name, '')
+            input = input.replace(name, this._botName)
         }
         if (!input || input === '') return null
         const statename = state == 1 ? 'appelled' : 
